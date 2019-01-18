@@ -12,13 +12,18 @@ df_docs = df_docs[['p_name', 'doc_number', 'resident']]
 df_docs.columns = ['name', 'doc', 'country']
 dfj = DataFrame()
 dfj['json'] = df_docs.apply(lambda x: x.to_json(), axis=1)
-sip2 = dfj.iloc[6]['json']
+sip2 = dfj.loc[181]['json']
+
 
 sip = {
     'name': 'Tyson Anderson',
     'doc': 'W894384830',
     'country': 'Not Known',
 }
+for i in list(dfj.index):
+    sip3 = dfj.loc[i]['json']
+    res = es.index(index="test_persons", doc_type='sip', id=i, body=sip3)
+
 
 res = es.index(index="test_persons", doc_type='sip', id=181, body=sip2)
 print(res['result'])
