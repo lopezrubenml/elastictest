@@ -9,7 +9,7 @@ def match_func_no_counter(test_user, list_db, name_param, doc_param, site_param)
     from fuzzywuzzy import fuzz
     from fuzzywuzzy import process
     res_df = DataFrame()
-    df1_ = DataFrame(process.extractWithoutOrder(str(test_user.iloc[0].user_name), list_db.list_name))
+    df1_ = DataFrame(process.extractWithoutOrder(str(test_user.iloc[0].user_name), list_db.list_name, scorer = fuzz.partial_ratio))
     res_df['name_score'] = df1_[1]
     df2_ = DataFrame(process.extractWithoutOrder(str(test_user.iloc[0].user_doc), list_db.list_doc, scorer = fuzz.ratio))
     res_df['doc_score'] = df2_[1]

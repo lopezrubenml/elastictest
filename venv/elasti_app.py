@@ -21,11 +21,12 @@ def hello_world():
 def search(name,doc,country):
 
 	body = {
-		"query": {
-			"bool": {
-				"should": [
-					{"match": {"name": name}},
-					{"match": {"doc": doc}}
+	"size":100,
+	"query":{
+		"bool":{
+			"should":[
+				{"match":{"name":{"query":name, "fuzziness":"1"}}},
+				{"match":{"doc":{"query":doc, "fuzziness":"1"}}}
 				]
 			}
 		}
@@ -47,8 +48,8 @@ def search(name,doc,country):
 										name_param=name_param1,
 										doc_param=doc_param1,
 										site_param=site_param1)
-	name_min = 70
-	doc_min = 60
+	name_min = 80
+	doc_min = 70
 	filtered_mid_results = mid_results[(mid_results.name_score > name_min) | (mid_results.doc_score > doc_min)]
 	if filtered_mid_results.size > 0:
 		final_results = potential_matches.loc[list(filtered_mid_results.index)].to_json(orient='index')
